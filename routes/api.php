@@ -23,7 +23,22 @@ Route::post('/register',[userController::class,'register']);
 Route::post('/login',[userController::class,'login']);
 
 
+/*Normal authentication part*/
 Route::group(['middleware'=>['auth:sanctum']],function (){
-    Route::get('/',[userController::class,'allUser']);
+    Route::get('/getData',[userController::class,'allUser']);
     Route::get('/logout',[userController::class,'logout']);
+    Route::get('/checkAdmin',[userController::class,'checkAdmin']);
 });
+
+
+/*Fortify and sanctum authentication part*/
+Route::group(['middleware'=>['auth:sanctum']],function (){
+    Route::get('/',function (){
+        return response()->json([
+            "status" => 200,
+            "Message" => "Success"
+        ],200);
+    });
+});
+
+

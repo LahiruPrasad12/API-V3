@@ -43,6 +43,8 @@ class userController extends Controller
         ],200);
     }
 
+
+
     public function login(Request $request){
         $validator = Validator::make($request->all(),[
             'email' => "required|email",
@@ -69,11 +71,32 @@ class userController extends Controller
         return response()->json($user);
     }
 
+
+
     public function allUser(Request $request){
         return response()->json(['users'=>$request->user()]);
     }
 
+
+
     public function logout(Request $request){
         $request->user()->currentAccessToken()->delete();
+    }
+
+
+
+    public function checkAdmin(Request $request){
+        $user = $request->user();
+        if($user->tokenCan('admin')){
+            return response()->json([
+                'status'=>200,
+                'message'=>'admin'
+            ]);
+        }else{
+            return response()->json([
+                'status'=>200,
+                'message'=>'user'
+            ]);
+        }
     }
 }
